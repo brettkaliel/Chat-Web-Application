@@ -37,10 +37,12 @@
             $('#m').val('');
             return false;
         });
-        socket.on('new user', function(username){
-           socket.emit('make new user');
+        socket.on('new user', function(){
+            socket.emit('make new user');
 
         });
+
+
         socket.on('chat history', function(chatLog){
             for(let i = 0; i < chatLog.length; i++){
                 console.log(chatLog[i].color);
@@ -61,6 +63,8 @@
 
             }
         });
+
+
 
         socket.on('invalid name', function(name){
             $('#messages').append($('<li>').html('<span style="color: red">'

@@ -37,7 +37,10 @@ io.on('connection', function (socket) {
         socket.emit('set user', nickName);
         io.emit('user list', users);
         socket.emit('chat history', chatLog);
+
     });
+
+
 
     socket.on('chat message', function (msg) {
             timeStamp = new Date();
@@ -86,7 +89,6 @@ io.on('connection', function (socket) {
                     }
 
                     io.emit('user list', users);
-
                 }
                 else{
                     socket.emit('invalid color', newColor)
