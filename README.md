@@ -1,7 +1,7 @@
 # Chat-Web-Application
 node main.js
 
-/nick <name> to change nickname
+/nick "name" to change nickname
 
 
-/nickcolor <RRGGBB> to change color
+/nickcolor "RRGGBB" to change color
