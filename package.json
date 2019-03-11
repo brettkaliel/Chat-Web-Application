@@ -2,7 +2,8 @@
   "name": "Chat-Web-Application",
   "version": "1.0.0",
   "dependencies": {
-    "express": "^4.15.2",
+    "express": "^4.16.4",
+    "mime": "^2.4.0",
     "socket.io": "^2.2.0"
   }
 }
