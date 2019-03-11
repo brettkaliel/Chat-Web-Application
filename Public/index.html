@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>Socket.IO chat</title>
+
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+
+</head>
+<body>
+<div class="container">
+
+    <div class="chat-box">
+        <h1 id="chatBoxHeader">  </h1>
+        <ul id="messages"></ul>
+    </div>
+
+    <div class="users-box">
+        <h1 id="userBoxHeader"> Current Users: </h1>
+        <ul id="users"></ul>
+    </div>
+    <form action="">
+        <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    $(function () {
+        var socket = io();
+        $('form').submit(function(e){
+            e.preventDefault(); // prevents page reloading
+            socket.emit('chat message', $('#m').val());
+            $('#m').val('');
+            return false;
+        });
+        socket.on('new user', function(username){
+           socket.emit('make new user');
+
+        });
+        socket.on('chat history', function(chatLog){
+            for(let i = 0; i < chatLog.length; i++){
+                console.log(chatLog[i].color);
+                $('#messages').append($('<li>').html(chatLog[i].time + " " + '<span style="color:' + chatLog[i].color + '">'
+                    + chatLog[i].name + ': </span>' + " " + chatLog[i].msgText));
+            }
+        });
+
+        socket.on('set user', function(username){
+            $('#chatBoxHeader').text("You are " + username);
+
+        });
+        socket.on('user list', function(userList){
+            $('#users').text("");
+            for(let i = 0; i < userList.length; i++){
+                $('#users').append($('<li>').html('<span style="color:' + userList[i].color + '">'
+                    + userList[i].name + '</span>'));
+
+            }
+        });
+
+        socket.on('invalid name', function(name){
+            $('#messages').append($('<li>').html('<span style="color: red">'
+                + name + ': </span>' + " is taken, choose another"));
+        });
+
+        socket.on('invalid color', function(color){
+            $('#messages').append($('<li>').html('<span style="color: red">'
+                + "#" + color + ': </span>' + " is not a valid color, please enter it in the form RRGGBB"));
+        });
+
+
+
+        socket.on('chat message', function(msg,timing,username, color){
+
+            $('#messages').append($('<li>').html(timing + " " + '<span style="color:' + color + '">'
+                + username + ': </span>' + " " + msg));
+        });
+
+        socket.on('user chat message', function(msg,timing,username, color){
+
+            $('#messages').append($('<li>').html('<B>' + timing + " " + '<span style="color:' + color + '">'
+                + username + ': </span>' + " " + msg+ '<B>'));
+
+        });
+
+    });
+</script>
+
+</body>
+</html>
