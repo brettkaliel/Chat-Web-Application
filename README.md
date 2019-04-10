@@ -1,7 +1,8 @@
 # Chat-Web-Application
-npm install --save express@4.15.2
 
-npm install --save socket.io
+npm install -g express
+
+npm install -g socket.io
 
 
 node main.js
